@@ -42,8 +42,12 @@ def _inline(text, mode, stash):
     text = _CODE.sub(keep, text)
     if mode == "html":
         text = html.escape(text, quote=False)
-        text = _IMG.sub(r'<img alt="\1" src="\2">', text)
-        text = _LINK.sub(r'<a href="\2">\1</a>', text)
+        # The text above is escaped with quote=False, so a double quote in
+        # a URL or alt text would break out of the attribute. Quote it.
+        text = _IMG.sub(lambda m: '<img alt="{}" src="{}">'.format(
+            m.group(1).replace('"', "&quot;"), m.group(2).replace('"', "&quot;")), text)
+        text = _LINK.sub(lambda m: '<a href="{}">{}</a>'.format(
+            m.group(2).replace('"', "&quot;"), m.group(1)), text)
         text = _BOLD.sub(lambda m: "<strong>{}</strong>".format(m.group(1) or m.group(2)), text)
         text = _ITALIC.sub(lambda m: "<em>{}</em>".format(m.group(1) or m.group(2)), text)
         text = _STRIKE.sub(r"<del>\1</del>", text)
@@ -73,7 +77,7 @@ def _inline(text, mode, stash):
 _HEADING = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
 _HR = re.compile(r"^\s*([-*_])(\s*\1){2,}\s*$")
 _UL = re.compile(r"^(\s*)[-*+]\s+(.*)$")
-_OL = re.compile(r"^(\s*)\d+[.)]\s+(.*)$")
+_OL = re.compile(r"^(\s*)(\d+)[.)]\s+(.*)$")
 _QUOTE = re.compile(r"^>\s?(.*)$")
 _TABLE_SEP = re.compile(r"^\s*\|?[\s:|-]+\|?\s*$")
 
@@ -171,9 +175,10 @@ def render_blocks(lines, mode):
                     for r in rows)
                 out.append("<table><tr>{}</tr>{}</table>".format(head, body))
             else:
-                widths = [max(len(r[c]) for r in [header] + rows if c < len(r)) for c in range(len(header))]
+                ncols = max([len(header)] + [len(r) for r in rows])
+                widths = [max(len(r[c]) for r in [header] + rows if c < len(r)) for c in range(ncols)]
                 def fmt(r):
-                    return " | ".join((r[c] if c < len(r) else "").ljust(widths[c]) for c in range(len(header)))
+                    return " | ".join((r[c] if c < len(r) else "").ljust(widths[c]) for c in range(ncols))
                 table_lines = [fmt(header), "-+-".join("-" * w for w in widths)]
                 table_lines.extend(fmt(r) for r in rows)
                 out.append("\n".join(table_lines))
@@ -183,20 +188,22 @@ def render_blocks(lines, mode):
         if ul or ol:
             flush_paragraph()
             ordered = ol is not None
+            start = int(ol.group(2)) if ordered else 1
             items = []
             while i < n:
                 m = _OL.match(lines[i]) if ordered else _UL.match(lines[i])
                 if not m:
                     break
-                items.append((len(m.group(1)), m.group(2)))
+                items.append((len(m.group(1)), m.group(3) if ordered else m.group(2)))
                 i += 1
             if mode == "html":
                 tag = "ol" if ordered else "ul"
-                out.append("<{0}>{1}</{0}>".format(
-                    tag, "".join("<li>{}</li>".format(_inline(t, mode, [])) for _, t in items)))
+                attr = ' start="{}"'.format(start) if ordered and start != 1 else ""
+                out.append("<{0}{1}>{2}</{0}>".format(
+                    tag, attr, "".join("<li>{}</li>".format(_inline(t, mode, [])) for _, t in items)))
             else:
                 rendered = []
-                for num, (indent, text) in enumerate(items, 1):
+                for num, (indent, text) in enumerate(items, start):
                     marker = "{}.".format(num) if ordered else "-"
                     rendered.append("{} {} {}".format(" " * indent, marker, _inline(text, mode, [])))
                 out.append("\n".join(rendered))
@@ -260,8 +267,12 @@ def main(argv=None):
         result = render(source, mode)
 
     if args.output:
-        with open(args.output, "w", encoding="utf-8") as fh:
-            fh.write(result + "\n")
+        try:
+            with open(args.output, "w", encoding="utf-8") as fh:
+                fh.write(result + "\n")
+        except OSError as exc:
+            print("Error: {}".format(exc), file=sys.stderr)
+            return 2
     else:
         print(result)
     return 0

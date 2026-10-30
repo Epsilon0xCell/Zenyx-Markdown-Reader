@@ -1,3 +1,5 @@
+![banner](assets/banner.png)
+
 # Zenyx-Reader
 
 An open-source ReadMe!-style alternative: a lightweight Markdown reader and
@@ -21,7 +23,7 @@ cat README.md | python3 zenyx.py -         # read from stdin
 - Bold, italic, strikethrough, inline code
 - Fenced code blocks (contents are never reformatted)
 - Links and images
-- Unordered and ordered lists
+- Unordered and ordered lists (an ordered list keeps its starting number)
 - Blockquotes
 - Horizontal rules
 - Pipe tables (rendered as aligned text in the terminal, real `<table>` in HTML)
