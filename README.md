@@ -1,6 +1,6 @@
 ![banner](assets/banner.png)
 
-# Zenyx-Reader
+# Zenyx-Markdown-Reader
 
 An open-source ReadMe!-style alternative: a lightweight Markdown reader and
 renderer. Point it at a README (or any Markdown file) and read it comfortably
