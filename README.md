@@ -28,6 +28,12 @@ cat README.md | python3 zenyx.py -         # read from stdin
 - Horizontal rules
 - Pipe tables (rendered as aligned text in the terminal, real `<table>` in HTML)
 
+In HTML output, link and image destinations are checked against a scheme
+allowlist (`http`, `https`, `mailto`, plus relative paths and `#anchors`).
+A destination with any other scheme, such as `javascript:` or `data:`, is
+replaced with `#`, so a Markdown file from someone else cannot plant a
+clickable script in a page I render from it.
+
 ## Library use
 
 ```python

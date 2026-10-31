@@ -49,6 +49,33 @@ _STRIKE = re.compile(r"~~([^~]+)~~")
 # list are the same number, and those two have to move together.
 _PLACEHOLDER = "\x00{}\x00"
 
+# A destination only earns its place in an href or src if it is one
+# of these schemes, or has no scheme at all (a relative path or a
+# #anchor). Anything else, javascript: and data: and vbscript: at
+# the front of the list, is replaced with # in HTML output. I render
+# files other people wrote, and a link I emit with a javascript:
+# destination runs when the reader clicks it. That is the one
+# place this renderer could hurt the person it is supposed to serve,
+# so the check sits on the URL itself, before the tag is built.
+_ALLOWED_SCHEMES = {"http", "https", "mailto"}
+_SCHEME = re.compile(r"^([A-Za-z][A-Za-z0-9+.-]*):")
+
+
+def _safe_url(url):
+    """Return url unchanged if its scheme is allowed or it has no
+    scheme; return '#' if it carries a scheme I do not allow."""
+    # Browsers strip leading spaces and control characters before
+    # they read a scheme, so the check has to strip them too. A
+    # destination padded with a control character is still the
+    # scheme it spells once the padding is gone.
+    candidate = url.strip()
+    while candidate and ord(candidate[0]) <= 0x20:
+        candidate = candidate[1:]
+    match = _SCHEME.match(candidate)
+    if match and match.group(1).lower() not in _ALLOWED_SCHEMES:
+        return "#"
+    return url
+
 
 def _inline(text, mode, stash):
     """Apply inline formatting. Code spans are stashed first and restored
@@ -74,12 +101,13 @@ def _inline(text, mode, stash):
         # The text above is escaped with quote=False, so a double quote in
         # a URL or alt text would break out of the attribute. Quote it.
         text = _IMG.sub(lambda m: '<img alt="{}" src="{}">'.format(
-            m.group(1).replace('"', "&quot;"), m.group(2).replace('"', "&quot;")), text)
+            m.group(1).replace('"', "&quot;"),
+            _safe_url(m.group(2)).replace('"', "&quot;")), text)
         # A & in a URL reaches this line already turned into &amp; by
         # the escape step. That is the form an href value should carry
         # in HTML, so I leave it as it is instead of unescaping it.
         text = _LINK.sub(lambda m: '<a href="{}">{}</a>'.format(
-            m.group(2).replace('"', "&quot;"), m.group(1)), text)
+            _safe_url(m.group(2)).replace('"', "&quot;"), m.group(1)), text)
         text = _BOLD.sub(lambda m: "<strong>{}</strong>".format(m.group(1) or m.group(2)), text)
         text = _ITALIC.sub(lambda m: "<em>{}</em>".format(m.group(1) or m.group(2)), text)
         text = _STRIKE.sub(r"<del>\1</del>", text)
