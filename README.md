@@ -32,7 +32,15 @@ In HTML output, link and image destinations are checked against a scheme
 allowlist (`http`, `https`, `mailto`, plus relative paths and `#anchors`).
 A destination with any other scheme, such as `javascript:` or `data:`, is
 replaced with `#`, so a Markdown file from someone else cannot plant a
-clickable script in a page I render from it.
+clickable script in a page I render from it. The check reads the scheme
+the way a browser does: leading spaces and control characters are
+stripped first, and tab, carriage return, and newline characters inside
+the destination are removed before the scheme is read, so a scheme
+spelled with a tab inside it is still caught.
+
+A file that is missing, is a directory, or is not valid UTF-8 text gets
+a short error on stderr and exit 2. Nothing here prints a traceback for
+input I cannot read.
 
 ## Library use
 
@@ -42,6 +50,22 @@ from zenyx import render
 text = render(open("README.md").read(), "plain")   # or "ansi" / "html"
 print(text)
 ```
+
+`render()` raises `ValueError` for any other mode name, instead of
+quietly returning plain text for a name it does not know.
+
+## Tests
+
+```sh
+python3 -m unittest
+```
+
+22 tests in `test_zenyx.py`: the URL scheme allowlist (allowed and
+blocked schemes, padded schemes, and schemes with a tab, carriage
+return, or newline inside the word), HTML and plain rendering of the
+constructs listed above, escaping of raw HTML in the source, the
+unknown mode error, and the command line paths (missing file, non-UTF-8
+file, directory, stdin, and writing an HTML file with `-o`).
 
 ## License
 

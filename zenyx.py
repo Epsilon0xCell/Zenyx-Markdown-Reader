@@ -68,7 +68,13 @@ def _safe_url(url):
     # they read a scheme, so the check has to strip them too. A
     # destination padded with a control character is still the
     # scheme it spells once the padding is gone.
-    candidate = url.strip()
+    # Browsers also remove tab, carriage return, and newline
+    # characters anywhere in a URL before they read the scheme, so I
+    # remove them here too. Without that step a destination spelled
+    # with a tab inside the scheme word slips past the scheme match
+    # here and still reads as that scheme in the browser.
+    candidate = url.replace("\t", "").replace("\r", "").replace("\n", "")
+    candidate = candidate.strip()
     while candidate and ord(candidate[0]) <= 0x20:
         candidate = candidate[1:]
     match = _SCHEME.match(candidate)
@@ -366,7 +372,15 @@ table { border-collapse: collapse; } th, td { border: 1px solid #ccc; padding: 0
 
 
 def render(source, mode="ansi"):
-    """Render Markdown source text. mode: 'ansi', 'plain', or 'html'."""
+    """Render Markdown source text. mode: 'ansi', 'plain', or 'html'.
+
+    Any other mode raises ValueError. Before this check a mistyped
+    mode name fell through to the plain text branches and produced
+    output that looked fine, so a caller asking for HTML by a wrong
+    name got terminal text and no sign anything was off.
+    """
+    if mode not in ("ansi", "plain", "html"):
+        raise ValueError("unknown mode {!r}: use 'ansi', 'plain', or 'html'".format(mode))
     blocks = render_blocks(source.splitlines(), mode)
     if mode == "html":
         # The page title is always Zenyx Reader, whatever file was
@@ -391,13 +405,23 @@ def main(argv=None):
     args = parser.parse_args(argv)
 
     if args.path == "-":
-        source = sys.stdin.read()
+        try:
+            source = sys.stdin.read()
+        except UnicodeDecodeError as exc:
+            print("Error: stdin is not valid UTF-8 text: {}".format(exc), file=sys.stderr)
+            return 2
     else:
         try:
             with open(args.path, encoding="utf-8") as fh:
                 source = fh.read()
         except OSError as exc:
             print("Error: {}".format(exc), file=sys.stderr)
+            return 2
+        except UnicodeDecodeError as exc:
+            # A binary file or a file saved in another encoding is
+            # input I cannot read, not a crash. It gets the same
+            # short error and exit 2 as a missing file.
+            print("Error: {} is not valid UTF-8 text: {}".format(args.path, exc), file=sys.stderr)
             return 2
 
     # If --html and --plain are both passed, --html wins and --plain is
