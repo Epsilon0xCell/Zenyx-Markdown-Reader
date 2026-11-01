@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-label="A hermit crab vacancy chain: each crab in turn leaves its shell and takes the larger one just vacated">
+<rect x="0" y="0" width="1200" height="120" fill="#eee6d2"/>
+<polygon points="0,110 340,88 700,102 980,86 1200,106 1200,140 0,140" fill="#cec098"/>
+<polygon points="36,150 300,142 316,190 52,198" fill="#4a4842"/>
+<ellipse cx="176" cy="168" rx="112" ry="20" fill="#2e326e">
+<animate attributeName="fill" values="#2e326e;#454c8c;#2e326e" dur="30s" repeatCount="indefinite"/>
+</ellipse>
+<rect x="0" y="140" width="1200" height="160" fill="#e2d0a8"/>
+<g id="shells" fill="#eee8d8" stroke="#948c78">
+<g transform="translate(300,225)"><ellipse rx="30" ry="25"/><ellipse cx="-14" cy="-2" rx="19" ry="16" fill="#cbc3ae"/></g>
+<g transform="translate(470,222)"><ellipse rx="38" ry="31"/><ellipse cx="-18" cy="-2" rx="24" ry="20" fill="#cbc3ae"/></g>
+<g transform="translate(665,218)"><ellipse rx="47" ry="38"/><ellipse cx="-22" cy="-3" rx="29" ry="24" fill="#cbc3ae"/></g>
+<g transform="translate(885,214)"><ellipse rx="57" ry="46"/><ellipse cx="-27" cy="-4" rx="35" ry="29" fill="#cbc3ae"/><path d="M -57,0 A 57,46 0 0 1 30,-38" fill="none" stroke="#d8b25c" stroke-width="6"/></g>
+</g>
+<g id="crabA" fill="#807c70">
+<ellipse cx="0" cy="0" rx="15" ry="8"/>
+<circle cx="4" cy="-8" r="2.5" fill="#d8b25c"/>
+<path d="M -12,4 L -22,14 M 12,4 L 22,14 M -14,-2 L -24,-8 M 14,-2 L 24,-8" stroke="#64605a" stroke-width="3"/>
+<animateTransform attributeName="transform" type="translate" values="330,232; 330,232; 428,230; 428,230; 330,232" keyTimes="0;0.3;0.4;0.92;1" dur="48s" repeatCount="indefinite"/>
+<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.4;0.45;0.92;1" dur="48s" repeatCount="indefinite"/>
+</g>
+<g id="crabB" fill="#807c70">
+<ellipse cx="0" cy="0" rx="13" ry="7"/>
+<circle cx="3" cy="-7" r="2.2" fill="#d8b25c"/>
+<path d="M -10,3 L -19,12 M 10,3 L 19,12 M -12,-2 L -20,-7 M 12,-2 L 20,-7" stroke="#64605a" stroke-width="3"/>
+<animateTransform attributeName="transform" type="translate" values="160,236; 160,236; 262,234; 262,234; 160,236" keyTimes="0;0.52;0.62;0.92;1" dur="48s" repeatCount="indefinite"/>
+<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.62;0.67;0.92;1" dur="48s" repeatCount="indefinite"/>
+</g>
+<g id="crabC" fill="#807c70">
+<ellipse cx="0" cy="0" rx="17" ry="9"/>
+<circle cx="5" cy="-9" r="2.8" fill="#d8b25c"/>
+<path d="M -14,4 L -25,15 M 14,4 L 25,15 M -16,-2 L -27,-9 M 16,-2 L 27,-9" stroke="#64605a" stroke-width="3"/>
+<animateTransform attributeName="transform" type="translate" values="512,230; 512,230; 618,226; 618,226; 512,230" keyTimes="0;0.08;0.18;0.92;1" dur="48s" repeatCount="indefinite"/>
+<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;0.18;0.23;0.92;1" dur="48s" repeatCount="indefinite"/>
+</g>
+<g id="water">
+<polygon points="0,272 1200,262 1200,282 0,294" fill="#565f96" opacity="0.55">
+<animate attributeName="points" values="0,272 1200,262 1200,282 0,294; 0,264 1200,254 1200,282 0,294; 0,272 1200,262 1200,282 0,294" dur="9s" repeatCount="indefinite"/>
+</polygon>
+</g>
+</svg>
