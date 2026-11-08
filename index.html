@@ -3,79 +3,70 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zenyx-Markdown-Reader: The Hermit Crab Housing Exchange</title>
-<meta name="description" content="Zenyx is a single file Markdown reader and renderer, standard library only. One body of text, three coverings: plain, ANSI colour, and a standalone HTML page.">
+<title>Zenyx-Markdown-Reader: The Copy Editor's Desk</title>
+<meta name="description" content="A lightweight Markdown reader and renderer in a single Python file, standard library only: read any Markdown file comfortably in the terminal, or turn it into a standalone HTML page.">
 <style>
-@font-face{font-family:'Asar';src:url('fonts/Asar.ttf') format('truetype');}
-@font-face{font-family:'Bitter';src:url('fonts/Bitter.ttf') format('truetype');}
-:root{--ind:#262a60;--bone:#f0ead8;--gold:#d8b25c;--silt:#807c70}
-*{box-sizing:border-box} body{margin:0;background:#e9dfc6;color:#2c2c34;font-family:'Bitter',serif;line-height:1.65;border-left:6px solid var(--ind)}
-h1,h2{font-family:'Asar',serif;color:var(--ind)}
-.hero{padding:2rem 6vw 0;max-width:1100px;margin:0 auto}.hero img.banner{width:100%;height:auto}
-.logo{width:150px;height:auto}
-main{padding:0 6vw 3rem;max-width:1100px;margin:0 auto}
-.pool{background:var(--ind);color:var(--bone);padding:1.2rem 1.5rem;margin:1.5rem 0;position:relative;box-shadow:0 0 0 4px #4a4842,0 0 0 7px #6b675c}
-.pool h2{color:var(--bone)}
-.pool .shellmark{position:absolute;top:10px;right:14px;width:26px;height:20px;border-radius:50%;background:#eee8d8;border:2px solid #948c78}
-.pool code,.pool pre{color:#fff}
-pre{background:rgba(255,255,255,.1);padding:1rem;overflow-x:auto;font-size:.92rem}
-.shellbtn{display:inline-block;background:#eee8d8;color:var(--ind);font-family:'Asar',serif;text-decoration:none;padding:.6rem 1.3rem;margin:.3rem .4rem .3rem 0;border-radius:50% 50% 46% 46%/62% 62% 38% 38%;border:2px solid #948c78;box-shadow:inset -8px -4px 0 #cbc3ae,0 4px 0 #c9b586;transition:transform .15s}
-.shellbtn:hover{transform:translateY(-3px)}
-.shellbtn:active{transform:none;box-shadow:inset -8px -4px 0 #cbc3ae}
-.shellbtn:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
-a{color:var(--ind)} a:before{content:'· · ';color:var(--ind);font-weight:bold;letter-spacing:.1em}
-a:hover:before{content:'· · · · '}
-.shellbtn:before{content:none}
-.pool a{color:var(--gold)}
-.tide{height:14px;background:#565f96;margin:2rem 0;position:relative}
-.tide:after{content:'';position:absolute;left:50%;top:11px;width:16px;height:10px;background:#eee8d8;border:1.5px solid #948c78;border-radius:40%}
-code{font-family:ui-monospace,monospace}
-footer{padding:1rem 6vw 2.4rem;max-width:1100px;margin:0 auto}
+@font-face{font-family:'Noto Serif Display';src:url('fonts/NotoSerifDisplay-400.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Noto Serif Display';src:url('fonts/NotoSerifDisplay-600.woff2') format('woff2');font-weight:600}
+@font-face{font-family:'Noto Serif Display';src:url('fonts/NotoSerifDisplay-700.woff2') format('woff2');font-weight:700}
+@font-face{font-family:'Lexend';src:url('fonts/Lexend-400.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Lexend';src:url('fonts/Lexend-500.woff2') format('woff2');font-weight:500}
+@font-face{font-family:'Lexend';src:url('fonts/Lexend-600.woff2') format('woff2');font-weight:600}
+@font-face{font-family:'Lexend';src:url('fonts/Lexend-700.woff2') format('woff2');font-weight:700}
+:root{--paper:#faf8f2;--paperdk:#efe9db;--oak:#8a6844;--oakdk:#5d4630;--graphite:#4a4a48;--red:#b3341f;--line:#ddd5c2;--ink:#2c2a26}
+*{box-sizing:border-box} body{margin:0;background:var(--paperdk);color:var(--ink);font-family:'Lexend',sans-serif;line-height:1.65}
+h1,h2{font-family:'Noto Serif Display',serif}
+.hero{background:linear-gradient(168deg,#a07a4e 0%,var(--oak) 55%,var(--oakdk) 100%);padding:2.2rem 6vw 1.8rem;border-bottom:8px solid var(--red)}
+.hero .inner{max-width:1020px;margin:0 auto}
+.hero img.wide{width:100%;height:auto;display:block;border:5px solid var(--paper);border-radius:4px;box-shadow:0 4px 18px rgba(0,0,0,.4)}
+.hero .row{display:flex;gap:1.1rem;align-items:flex-start;margin-top:1.2rem}
+.hero .row img{width:92px;height:92px;object-fit:cover;border-radius:6px;border:3px solid var(--paper);background:var(--paper)}
+.hero h1{margin:.1rem 0 .3rem;font-size:2.3rem;font-weight:700;color:#fdfbf6}
+.hero p{max-width:44rem;color:#f3ecdd}
+.hero a{color:#ffd9cf}
+main{padding:0 6vw 3rem;max-width:1020px;margin:0 auto}
+.card{background:var(--paper);border:1px solid var(--line);border-top:8px solid var(--oak);padding:1.2rem 1.5rem;margin:1.6rem 0;box-shadow:0 2px 8px rgba(60,45,25,.18)}
+.card.red{border-top-color:var(--red)}
+.card h2{margin:.1rem 0 .5rem;font-size:1.55rem;font-weight:600;color:var(--oakdk)}
+.card p{margin:.4rem 0}
+.strip{background:#33322f;color:#f0ead8;padding:1rem 1.2rem;overflow-x:auto;font-family:ui-monospace,Menlo,monospace;font-size:.92rem;border-radius:4px;border-left:6px solid var(--red)}
+.btn{display:inline-block;background:var(--red);color:#fff;font-family:'Lexend',sans-serif;font-weight:600;text-decoration:none;padding:.55rem 1.1rem;border-radius:3px;margin:.3rem .4rem .3rem 0}
+.btn:hover{background:var(--paper);color:var(--red)}.btn:active{transform:translateY(2px)}
+.btn:focus-visible{outline:2px dashed var(--red);outline-offset:3px}
+a{color:var(--red);font-weight:600}
+table{border-collapse:collapse}td{padding:.2rem .9rem .2rem 0;vertical-align:top}
+td:first-child{font-weight:600;color:var(--oakdk);white-space:nowrap}
+ul{margin:.4rem 0;padding-left:1.2rem}li{margin:.25rem 0}
+.small{font-size:.92rem}
+footer{padding:0 6vw 2.5rem;max-width:1020px;margin:0 auto;color:#7a6a52}
 </style>
 </head>
 <body>
 <header class="hero">
-<img class="logo" src="assets/logo.png" alt="Vacancy chain of hermit crabs and shells in a line">
-<img class="banner" src="assets/banner.png" alt="Hermit crab queue on a dawn beach with the project name on a dune board">
-<h1>Zenyx-Markdown-Reader</h1>
-<p>Zenyx is a single file program, <code>zenyx.py</code>, a Markdown reader and renderer in the spirit of a ReadMe style reader. Point it at a README or any Markdown file and read it in the terminal, or turn it into a standalone HTML page.</p>
-<p><strong>Standard library only, nothing to install.</strong></p>
-<p><a class="shellbtn" href="https://github.com/Epsilon0xCell/Zenyx-Markdown-Reader">Get Zenyx on GitHub</a></p>
+<div class="inner">
+<img class="wide" src="assets/intro-banner.png" alt="A hand lifting a marked manuscript page aside on an oak desk to reveal the clean pages beneath it, more annotated pages spread at the left under a brass desk lamp">
+<div class="row"><img src="assets/banner.png" alt="An oak copy editor's desk split between work and result: marked up manuscript pages and graphite pencils on the left, a neat stack of clean printed pages on the right under a brass desk lamp, one red pencil laid across the divide"><div><h1>Zenyx Markdown Reader</h1><p>An open-source ReadMe!-style alternative: a lightweight Markdown reader and renderer in a single Python file. Point it at a README (or any Markdown file) and read it comfortably in the terminal, or turn it into a standalone HTML page. Standard library only, nothing to install.</p><p><a class="btn" href="https://github.com/Epsilon0xCell/Zenyx-Markdown-Reader">Open the repo</a> <a class="btn" href="#usage">Usage</a></p></div></div>
+</div>
 </header>
 <main>
-<div class="tide"></div>
-<section class="pool"><span class="shellmark"></span>
-<h2>Second pool: the three ways out of a shell</h2>
-<pre>python3 zenyx.py README.md                 # read in the terminal (ANSI colour on a TTY)
-python3 zenyx.py README.md --plain         # terminal text without colour
-python3 zenyx.py README.md --html          # standalone HTML page to stdout
-python3 zenyx.py README.md --html -o page.html
-cat README.md | python3 zenyx.py -         # read from stdin</pre>
-<p>Reading from a pipe works by naming a dash as the file, so a file piped in is read from stdin.</p>
-</section>
-<div class="tide"></div>
-<section class="pool"><span class="shellmark"></span>
-<h2>Third pool: what fits through the opening</h2>
-<p>ATX headings from one hash to six, bold, italic, strikethrough, inline code, fenced code blocks whose contents are never reformatted, links and images, unordered lists, ordered lists that keep their starting number, blockquotes, horizontal rules, and pipe tables, which appear as aligned text in the terminal and as a real table element in HTML.</p>
-</section>
-<div class="tide"></div>
-<section class="pool"><span class="shellmark"></span>
-<h2>Fourth pool: the inspection at the door</h2>
-<p>In HTML output, link and image destinations are tested against an allowed list of schemes: <code>http</code>, <code>https</code>, and <code>mailto</code>, plus relative paths and hash anchors. Any other scheme is replaced with a hash, so a file written by someone else cannot plant a clickable script in a page rendered from it. This is a security check inside the rendering, not a reading feature.</p>
-<p>The check reads a destination the way a browser does: leading spaces and control characters are stripped, and tab, carriage return, and newline characters inside the destination are removed before the scheme is read, so a scheme spelled with a tab inside it is still caught.</p>
-</section>
-<div class="tide"></div>
-<section class="pool"><span class="shellmark"></span>
-<h2>Fifth pool: library use and honest limits</h2>
-<pre>from zenyx import render
-text = render(open("README.md").read(), "plain")   # or "ansi" / "html"</pre>
-<p>Any other mode name raises <code>ValueError</code> instead of quietly returning plain text. Errors are plain too: a missing file, a directory, or a file that is not valid UTF-8 gets a short error on stderr and exit code 2, with no traceback.</p>
-<p>The limits the code comments admit, stated here rather than buried: code spans written with double backticks are cut at the first inner backtick; a link destination containing a closing parenthesis is cut short at that character; and the double underscore form of bold can still trigger in the middle of a word even though the italic patterns guard against it.</p>
-<p>Testing closes the site: <code>python3 -m unittest</code> runs 22 tests in <code>test_zenyx.py</code> covering the scheme check, the render modes, escaping of raw HTML in the source, the unknown mode error, and the command line paths. License: MIT.</p>
-</section>
+<section class="card" id="usage"><h2>Three ways to read</h2><div class="strip">python3 zenyx.py README.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# read in the terminal (ANSI colors on a TTY)<br>python3 zenyx.py README.md --plain&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# terminal text without colors<br>python3 zenyx.py README.md --html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# standalone HTML page to stdout<br>python3 zenyx.py README.md --html -o page.html<br>cat README.md | python3 zenyx.py -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# read from stdin</div></section>
+<section class="card"><h2>Supported Markdown</h2><ul>
+<li>ATX headings (<code>#</code> to <code>######</code>)</li>
+<li>Bold, italic, strikethrough, inline code</li>
+<li>Fenced code blocks (contents are never reformatted)</li>
+<li>Links and images</li>
+<li>Unordered and ordered lists (an ordered list keeps its starting number)</li>
+<li>Blockquotes</li>
+<li>Horizontal rules</li>
+<li>Pipe tables (rendered as aligned text in the terminal, real <code>&lt;table&gt;</code> in HTML)</li>
+</ul></section>
+<section class="card red"><h2>The scheme allowlist</h2><p>In HTML output, link and image destinations are checked against a scheme allowlist (<code>http</code>, <code>https</code>, <code>mailto</code>, plus relative paths and <code>#anchors</code>). A destination with any other scheme, such as <code>javascript:</code> or <code>data:</code>, is replaced with <code>#</code>, so a Markdown file from someone else cannot plant a clickable script in a page rendered from it. The check reads the scheme the way a browser does: leading spaces and control characters are stripped first, and tab, carriage return, and newline characters inside the destination are removed before the scheme is read, so a scheme spelled with a tab inside it is still caught.</p></section>
+<section class="card"><h2>Errors without drama</h2><p>A file that is missing, is a directory, or is not valid UTF-8 text gets a short error on stderr and exit 2. Nothing here prints a traceback for input it cannot read.</p></section>
+<section class="card"><h2>Library use</h2><div class="strip">from zenyx import render<br><br>text = render(open("README.md").read(), "plain")&nbsp;&nbsp;&nbsp;# or "ansi" / "html"<br>print(text)</div><p><code>render()</code> raises <code>ValueError</code> for any other mode name, instead of quietly returning plain text for a name it does not know.</p></section>
+<section class="card"><h2>Tests</h2><div class="strip">python3 -m unittest</div><p>22 tests in <code>test_zenyx.py</code>: the URL scheme allowlist (allowed and blocked schemes, padded schemes, and schemes with a tab, carriage return, or newline inside the word), HTML and plain rendering of the constructs listed above, escaping of raw HTML in the source, the unknown mode error, and the command line paths (missing file, non-UTF-8 file, directory, stdin, and writing an HTML file with <code>-o</code>).</p></section>
+<section class="card red"><h2>The admitted limits</h2><p>Stated in the README rather than buried: code spans written with double backticks are cut at the first inner backtick, a link destination containing a closing parenthesis is cut short at that character, and the double underscore form of bold can still trigger in the middle of a word even though the italic patterns guard against it. These limits are admitted in the code comments of <code>zenyx.py</code> as well.</p></section>
+<section class="card"><h2>The files</h2><p class="small"><code>zenyx.py</code>, the reader itself. <code>test_zenyx.py</code>, the 22 tests. <code>SECURITY.md</code>. <code>LICENSE</code>, the MIT License. Full notes are in the <a href="https://github.com/Epsilon0xCell/Zenyx-Markdown-Reader">repo README</a>.</p></section>
 </main>
-<footer>
-<p>Theme: a hermit crab housing exchange on a dawn beach. Type: Asar for headings, Bitter for reading, both SIL Open Font License 1.1. Lettering reference Dust West was used as reference only and is not embedded.</p>
-</footer>
+<footer><p>Marked up on the left, clean on the right: one plain file, two finished homes.</p></footer>
 </body>
 </html>
