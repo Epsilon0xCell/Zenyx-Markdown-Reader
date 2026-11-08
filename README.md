@@ -1,8 +1,8 @@
-![Hermit crab queue at dawn, one large empty shell waiting in the foreground](intro-banner.png)
+![Intro scenery: a hand lifting a marked manuscript page aside on an oak desk to reveal the clean pages beneath it, more annotated pages spread at the left under a brass desk lamp](intro-banner.png)
 
 # Zenyx-Markdown-Reader
 
-![Exchange beach with the project name lettered on a dune board](banner.png)
+![Wordmark banner: an oak copy editor's desk split between work and result: marked up manuscript pages and graphite pencils on the left, a neat stack of clean printed pages on the right under a brass desk lamp, one red pencil laid across the divide](banner.png)
 
 ![Animated vacancy chain at the tide edge](scene.svg)
 # Zenyx-Markdown-Reader
