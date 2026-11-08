@@ -4,6 +4,8 @@
 
 ![Wordmark banner: an oak copy editor's desk split between work and result: marked up manuscript pages and graphite pencils on the left, a neat stack of clean printed pages on the right under a brass desk lamp, one red pencil laid across the divide](banner.png)
 
+<p align="center"><img src="logo.png" alt="Zenyx-Markdown-Reader logo: a proof page on an oak desk seen at a low oblique angle in shallow focus, its printed body dissolved into smooth soft grey bands with no readable words, sharp graphite editor's marks in the near margin, a caret, a circled area, a circled arrow and a cross-out, and a wooden pencil with a silver ferrule ringed in red and a sharpened graphite point resting along the page edge, no eraser visible" width="200"></p>
+
 ![Animated vacancy chain at the tide edge](scene.svg)
 # Zenyx-Markdown-Reader
 
