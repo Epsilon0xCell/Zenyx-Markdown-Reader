@@ -7,7 +7,6 @@
 <p align="center"><img src="logo.png" alt="Zenyx-Markdown-Reader logo: a proof page on an oak desk seen at a low oblique angle in shallow focus, its printed body dissolved into smooth soft grey bands with no readable words, sharp graphite editor's marks in the near margin, a caret, a circled area, a circled arrow and a cross-out, and a wooden pencil with a silver ferrule ringed in red and a sharpened graphite point resting along the page edge, no eraser visible" width="200"></p>
 
 ![Animated vacancy chain at the tide edge](scene.svg)
-# Zenyx-Markdown-Reader
 
 An open-source ReadMe!-style alternative: a lightweight Markdown reader and
 renderer. Point it at a README (or any Markdown file) and read it comfortably
@@ -41,7 +40,7 @@ In HTML output, link and image destinations are checked against a scheme
 allowlist (`http`, `https`, `mailto`, plus relative paths and `#anchors`).
 A destination with any other scheme, such as `javascript:` or `data:`, is
 replaced with `#`, so a Markdown file from someone else cannot plant a
-clickable script in a page I render from it. The check reads the scheme
+clickable script in a page rendered from it. The check reads the scheme
 the way a browser does: leading spaces and control characters are
 stripped first, and tab, carriage return, and newline characters inside
 the destination are removed before the scheme is read, so a scheme
@@ -49,7 +48,7 @@ spelled with a tab inside it is still caught.
 
 A file that is missing, is a directory, or is not valid UTF-8 text gets
 a short error on stderr and exit 2. Nothing here prints a traceback for
-input I cannot read.
+input it cannot read.
 
 ![Tide line divider](sep-light.svg)
 
